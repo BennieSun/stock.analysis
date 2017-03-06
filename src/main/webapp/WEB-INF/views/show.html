@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+ <style type="text/css">
+	table{border-collapse:collapse;border-spacing:0px; width:100%; border:#000 solid 0px;}
+	table td{border:1px solid #000;height:25px; text-align:center; border-left:0px;weight} 
+	/* table th{ background:#edd3d4; color:#a10333; border:#000 solid 1px; white-space:nowrap; height:21px; border-top:0px;border-left:0px;}  */
+	.t_left{width:30%; height:auto; float:left;border-top:1px solid #000;border-left:1px solid #000;} 
+	/*t_r_content和cl_freeze高度相差20px， 高度为外观显示高度，可根据情况调整*/ 
+	.t_r_content{width:100%; height:100%; background:#fff; overflow:auto;} 
+	/* .cl_freeze{height:200px;overflow:hidden; width:100%;}  */
+	/* width 调整左边标题列宽度（左侧外观显示宽度）; 指定为width:auto 在Opera下显示有问题; height比 t_r_content 高度小20px*/ 
+	/* width 宽度为 右侧外观显示宽度 实际显示宽度大小为“t_r”宽度加上“cl_freeze”宽度 */ 
+	/* 如果显示不正常，调整 t_r的width 使其和t_left的width之和小于100%；等于100%时会有问题*/ 
+	/* .t_r{width:69.5%; height:auto; float:left;border-top:1px solid #000; border-right:#000 solid 1px;}  */
+	.t_r_table{width="80%";frame="border";align="center"; border="1";} 
+	.t_r_title{width:100%;}/*宽度比 t_r table 大20px （至少大20，小了滚动条滑到右侧显示有问题）*/ 
+	/* .t_r_t{width:100%; overflow:hidden;} 
+	.bordertop{ border-top:0px;}  */
+</style>
+
+<title>显示</title>
+
+</head>
+
+<body>
+	<body style="text-align: center;" >
+	<br />
+	<h2>筛选结果</h2>
+	<div class="t_r_title">
+	<div>
+		<button onclick="http://localhost:8080/stock.analytics/saveAndUpdateStockDB">刷新</button>
+	</div>
+	<table class="t_r_table">
+		<tr >
+			<td rowspan="2">序号</td>
+			<td rowspan="2">代码</td>
+			<td rowspan="2">名称</td>
+			<td rowspan="2">最新价</td>
+			<td rowspan="2">今日涨跌幅</td>
+			<td colspan="2">今日主力净流入</td>
+			<td colspan="2">今日超大单净流入</td>
+			<td colspan="2">今日大单净流入</td>
+			<td colspan="2">今日中单净流入</td>
+			<td colspan="2">今日小单净流入</td>
+		</tr>
+		<tr >
+			<td >净额</td><td >净额比</td>
+			<td >净额</td><td >净额比</td>
+			<td >净额</td><td >净额比</td>
+			<td >净额</td><td >净额比</td>
+			<td >净额</td><td >净额比</td>
+		</tr>
+		
+	</table>
+	</div>
+	<div class="t_r_content">
+	<table class="t_r_table">
+		<#list simpleGetStockInfoTaskList as entity> 
+         	<tr>
+				<td>${entity.num }</td>
+				<td>${entity.code }</td>
+				<td>${entity.name }</td>
+				<td>${entity.latestPrice }</td>
+				
+				<#if entity.upAndDown?contains("-")>
+					<td bgcolor="green">${entity.upAndDown }%</td>
+				<#elseif entity.upAndDown?number==0>
+					<td>${entity.upAndDown }%</td>
+				<#else>
+					<td bgcolor="red">${entity.upAndDown}%</td>
+				</#if>
+				
+				<#if entity.mainForceBillIncome?contains("-")>
+				<td bgcolor="green">${entity.mainForceBillIncome }万</td>
+				<#elseif entity.mainForceBillIncome?number == 0>
+				<td>${entity.mainForceBillIncome }万</td>
+				<#else>
+				<td bgcolor="red">${entity.mainForceBillIncome }万</td>
+				</#if>
+				
+				
+				<#if entity.mainForceBillIncomePercentage?contains("-")>
+				<td bgcolor="green">${entity.mainForceBillIncomePercentage }%</td>
+				<#elseif entity.mainForceBillIncomePercentage?number == 0>
+				<td>${entity.mainForceBillIncomePercentage }%</td>
+				<#else>
+				<td bgcolor="red">${entity.mainForceBillIncomePercentage }%</td>
+				</#if>
+				
+				
+				<#if entity.hugeBillIncome?number == 0>
+				<td>${entity.hugeBillIncome }万</td>
+				<#elseif entity.hugeBillIncome?contains("-")>
+				<td bgcolor="green">${entity.hugeBillIncome }万</td>
+				<#else>
+				<td bgcolor="red">${entity.hugeBillIncome }万</td>
+				</#if>
+				
+				
+				<#if entity.hugeBillIncomePercentage?number == 0>
+				<td>${entity.hugeBillIncomePercentage }%</td>
+				<#elseif entity.hugeBillIncomePercentage?contains("-")>
+				<td bgcolor="green">${entity.hugeBillIncomePercentage }%</td>
+				<#else>
+				<td bgcolor="red">${entity.hugeBillIncomePercentage }%</td>
+				</#if>
+				
+				
+				<#if entity.bigBillIncome?number == 0>
+				<td>${entity.bigBillIncome }万</td>
+				<#elseif entity.bigBillIncome?contains("-")>
+				<td bgcolor="green">${entity.bigBillIncome }万</td>
+				<#else>
+				<td bgcolor="red">${entity.bigBillIncome }万</td>
+				</#if>
+				
+				
+				<#if entity.bigBillIncomePercentage?number == 0>
+				<td>${entity.bigBillIncomePercentage }%</td>
+				<#elseif entity.bigBillIncomePercentage?contains("-")>
+				<td bgcolor="green">${entity.bigBillIncomePercentage }%</td>
+				<#else>
+				<td bgcolor="red">${entity.bigBillIncomePercentage }%</td>
+				</#if>
+				
+				
+				<#if entity.mediumBillIncome?number == 0>
+				<td>${entity.mediumBillIncome }万</td>
+				<#elseif entity.mediumBillIncome?contains("-")>
+				<td bgcolor="green">${entity.mediumBillIncome }万</td>
+				<#else>
+				<td bgcolor="red">${entity.mediumBillIncome }万</td>
+				</#if>
+				
+				
+				<#if entity.mediumBillIncomePercentage?number == 0>
+				<td>${entity.mediumBillIncomePercentage }%</td>
+				<#elseif entity.mediumBillIncomePercentage?contains("-")>
+				<td bgcolor="green">${entity.mediumBillIncomePercentage }%</td>
+				<#else>
+				<td bgcolor="red">${entity.mediumBillIncomePercentage }%</td>
+				</#if>
+				
+				
+				<#if entity.smallBillIncome?number == 0>
+				<td>${entity.smallBillIncome }万</td>
+				<#elseif entity.smallBillIncome?contains("-")>
+				<td bgcolor="green">${entity.smallBillIncome }万</td>
+				<#else>
+				<td bgcolor="red">${entity.smallBillIncome }万</td>
+				</#if>
+				
+				
+				<#if entity.smallBillIncomePercentage?number == 0>
+				<td>${entity.smallBillIncomePercentage }%</td>
+				<#elseif entity.smallBillIncomePercentage?contains("-")>
+				<td bgcolor="green">${entity.smallBillIncomePercentage }%</td>
+				<#else>
+				<td bgcolor="red">${entity.smallBillIncomePercentage }%</td>
+				</#if>
+			</tr>
+    	</#list>
+	</table>
+	</div>
+	
+</body>
+</html>

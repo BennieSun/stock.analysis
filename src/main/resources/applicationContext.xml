@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd
+        http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<import resource="classpath*:*.bean.xml" />
+	
+	<context:property-placeholder location="classpath*:/*cfg.properties" />
+	
+	<aop:aspectj-autoproxy />
+
+	<context:annotation-config />
+
+	<task:annotation-driven />
+
+	<context:component-scan base-package="com.service.**" />
+	<context:component-scan base-package="com.dao.**" />
+	<context:component-scan base-package="com.events.**" />
+	<context:component-scan base-package="com.utils.**" />
+	
+	<bean id="requestFactory"
+		class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+		<property name="connectTimeout" value="5000" />
+		<property name="readTimeout" value="65000" />
+	</bean>
+
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="requestFactory" ref="requestFactory" />
+	</bean>
+	
+	<!-- FreeMarker环境配置 -->
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/views/" />
+	</bean>
+	
+	<!-- FreeMarker视图解析 -->
+	<bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+	  <property name="cache" value="true"/>
+	  <property name="prefix" value=""/>
+	  <property name="suffix" value=".html"/>
+	  <property name="contentType" value="text/html;charset=UTF-8"/>
+	</bean>
+</beans>
